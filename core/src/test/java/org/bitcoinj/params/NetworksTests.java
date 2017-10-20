@@ -24,26 +24,6 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class NetworksTests {
-    class PeercoinDummy extends MainNetParams {
-        PeercoinDummy() {
-            super();
-            family = "peercoin";
-        }
-    }
-    class NubitsDummy extends MainNetParams {
-        NubitsDummy() {
-            super();
-            family = "nubits";
-            tokenId = 0x42;
-        }
-    }
-    class NusharesDummy extends MainNetParams {
-        NusharesDummy() {
-            super();
-            family = "nubits";
-            tokenId = 0x53;
-        }
-    }
     class ReddcoinDummy extends MainNetParams {
         ReddcoinDummy() {
             super();
@@ -51,53 +31,10 @@ public class NetworksTests {
             transactionVersion = 2;
         }
     }
-    class BlackcoinDummy extends MainNetParams {
-        BlackcoinDummy() {
-            super();
-            family = "peercoin";
-        }
-    }
-    class VpncoinDummy extends MainNetParams {
-        VpncoinDummy() {
-            super();
-            family = "vpncoin";
-        }
-    }
-    class GridcoinDummy extends MainNetParams {
-        GridcoinDummy() {
-            super();
-            family = "gridcoin";
-        }
-    }
-    class ClamsDummy extends MainNetParams {
-        ClamsDummy() {
-            super();
-            family = "clams";
-            transactionVersion = 2;
-        }
-    }
-    class SolarcoinDummy extends MainNetParams {
-        SolarcoinDummy() {
-            super();
-            family = "solarcoin";
-            transactionVersion = 3;
-        }
-    }
-
-
 
     @Test
     public void networkFamily() throws Exception {
-        assertEquals(Networks.Family.PEERCOIN, Networks.getFamily(new PeercoinDummy()));
-        assertEquals(Networks.Family.PEERCOIN, Networks.getFamily(new BlackcoinDummy()));
-        assertEquals(Networks.Family.NUBITS, Networks.getFamily(new NubitsDummy()));
-        assertEquals(Networks.Family.NUBITS, Networks.getFamily(new NusharesDummy()));
-        assertEquals(Networks.Family.BITCOIN, Networks.getFamily(MainNetParams.get()));
         assertEquals(Networks.Family.REDDCOIN, Networks.getFamily(new ReddcoinDummy()));
-        assertEquals(Networks.Family.VPNCOIN, Networks.getFamily(new VpncoinDummy()));
-        assertEquals(Networks.Family.CLAMS, Networks.getFamily(new ClamsDummy()));
-        assertEquals(Networks.Family.SOLARCOIN, Networks.getFamily(new SolarcoinDummy()));
-        assertEquals(Networks.Family.GRIDCOIN, Networks.getFamily(new GridcoinDummy()));
     }
 
     @Test
@@ -105,50 +42,10 @@ public class NetworksTests {
         Transaction tx = makeTx(MainNetParams.get());
         assertTxEquals(tx, "01000000000100e1f505000000001976a914000000000000000000000000000000000000000088ac00000000");
 
-        tx = makeTx(new PeercoinDummy());
-        assertTxEquals(tx, "0100000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac00000000");
-
-        tx = makeTx(new NubitsDummy());
-        assertTxEquals(tx, "0100000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac0000000042");
-
-        tx = makeTx(new NusharesDummy());
-        assertTxEquals(tx, "0100000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac0000000053");
-
         tx = makeTx(new ReddcoinDummy());
         assertTxEquals(tx, "02000000000100e1f505000000001976a914000000000000000000000000000000000000000088ac0000000099999999");
         tx.setVersion(1);
         assertTxEquals(tx, "01000000000100e1f505000000001976a914000000000000000000000000000000000000000088ac00000000");
-
-        tx = makeTx(new BlackcoinDummy());
-        assertTxEquals(tx, "0100000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac00000000");
-
-        tx = makeTx(new VpncoinDummy());
-        assertTxEquals(tx, "0100000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac0000000000");
-        tx = new Transaction(new VpncoinDummy(), Hex.decode("0100000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac00000000030a0b0c"));
-        assertEquals("db3259e628ecf946ab2015cca6b668d701d00e29b8bb2028fb40e40de4debabd", tx.getHashAsString());
-
-        tx = makeTx(new GridcoinDummy());
-        assertTxEquals(tx, "0100000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac0000000000");
-        tx = new Transaction(new GridcoinDummy(), Hex.decode("0100000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac00000000030a0b0c"));
-        assertEquals("db3259e628ecf946ab2015cca6b668d701d00e29b8bb2028fb40e40de4debabd", tx.getHashAsString());
-
-        tx = makeTx(new ClamsDummy());
-        assertTxEquals(tx, "0200000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac0000000000");
-        tx.setVersion(1);
-        assertTxEquals(tx, "0100000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac00000000");
-        tx = new Transaction(new ClamsDummy(), Hex.decode("0200000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac00000000030a0b0c"));
-        assertEquals("db3259e628ecf946ab2015cca6b668d701d00e29b8bb2028fb40e40de4debabd", tx.getHashAsString());
-
-        tx = makeTx(new SolarcoinDummy());
-        assertTxEquals(tx, "03000000000100e1f505000000001976a914000000000000000000000000000000000000000088ac0000000000");
-        tx.setVersion(2);
-        assertTxEquals(tx, "02000000000100e1f505000000001976a914000000000000000000000000000000000000000088ac00000000");
-        tx.setVersion(1);
-        assertTxEquals(tx, "01000000000100e1f505000000001976a914000000000000000000000000000000000000000088ac00000000");
-        tx.setVersion(4);
-        assertTxEquals(tx, "0400000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac00000000");
-        tx = new Transaction(new SolarcoinDummy(), Hex.decode("0400000099999999000100e1f505000000001976a914000000000000000000000000000000000000000088ac00000000030a0b0c"));
-        assertEquals("afd08d2ddc3a17bf60ab0c6d577050483bfe03cdd413050da81eff1a48e388c7", tx.getHashAsString());
     }
 
     private void assertTxEquals(Transaction tx, String expectedTx) {
